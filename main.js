@@ -109,9 +109,13 @@ let createPeerConnection = async (MemberId) => {
     })
 
     peerConnection.ontrack = (event) => {
-        event.streams[0].getTracks().forEach((track) => {
+        console.log('Event Stream is '+  event.streams);
+        for(let i=0;i<event.streams.length;i++)
+        {
+        event.streams[i].getTracks().forEach((track) => {
             remoteStream.addTrack(track)
         })
+    }
     }
 
     peerConnection.onicecandidate = async (event) => {
