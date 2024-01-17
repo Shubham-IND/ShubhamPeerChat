@@ -76,6 +76,7 @@ let handleMessageFromPeer = async (message, MemberId) => {
 
     if(message.type === 'candidate'){
         if(peerConnection){
+            await peerConnection.setRemoteDescription(message.candidate)
             peerConnection.addIceCandidate(message.candidate)
         }
     }
