@@ -13,6 +13,7 @@ let channel;
 let queryString = window.location.search
 let urlParams = new URLSearchParams(queryString)
 let roomId = urlParams.get('room')
+console.log('Room ID is '+ roomId)
 
 if(!roomId){
     window.location = 'lobby.html'
@@ -34,7 +35,7 @@ const servers = {
 let constraints = {
     video:{
         width:{min:640, ideal:1920, max:1920},
-        height:{min:480, ideal:1080, max:1080},
+        height:{min:480, ideal:1920, max:1080},
     },
     audio:true
 }
