@@ -13,7 +13,6 @@ let channel;
 let queryString = window.location.search
 let urlParams = new URLSearchParams(queryString)
 let roomId = urlParams.get('room')
-console.log('Room ID is '+ roomId)
 
 if(!roomId){
     window.location = 'lobby.html'
@@ -35,7 +34,7 @@ const servers = {
 let constraints = {
     video:{
         width:{min:640, ideal:1920, max:1920},
-        height:{min:480, ideal:1920, max:1080},
+        height:{min:480, ideal:1080, max:1080},
     },
     audio:true
 }
@@ -76,7 +75,6 @@ let handleMessageFromPeer = async (message, MemberId) => {
 
     if(message.type === 'candidate'){
         if(peerConnection){
-            await peerConnection.setRemoteDescription(message.candidate)
             peerConnection.addIceCandidate(message.candidate)
         }
     }
@@ -101,7 +99,7 @@ let createPeerConnection = async (MemberId) => {
 
 
     if(!localStream){
-        localStream = await navigator.mediaDevices.getUserMedia({video:true, audio:true})
+        localStream = await navigator.mediaDevices.getUserMedia({video:true, audio:false})
         document.getElementById('user-1').srcObject = localStream
     }
 
@@ -110,13 +108,9 @@ let createPeerConnection = async (MemberId) => {
     })
 
     peerConnection.ontrack = (event) => {
-        console.log('Event Stream is '+  event.streams);
-        for(let i=0;i<event.streams.length;i++)
-        {
-        event.streams[i].getTracks().forEach((track) => {
+        event.streams[0].getTracks().forEach((track) => {
             remoteStream.addTrack(track)
         })
-    }
     }
 
     peerConnection.onicecandidate = async (event) => {
